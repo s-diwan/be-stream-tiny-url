@@ -1,0 +1,17 @@
+sudo: required
+services:
+    - docker
+language: java
+
+deploy:
+    provider: elasticbeanstalk
+    region: "us-east-2"
+    app: "Tinyurl-server"
+    env: "TinyurlServer-env"
+    bucket_name: "elasticbeanstalk-us-east-2-144147109709"
+    bucket_path: "Tinyurl-server"
+    edge: true
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
