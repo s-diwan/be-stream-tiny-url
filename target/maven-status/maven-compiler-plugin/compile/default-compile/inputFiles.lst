@@ -1,2 +1,4 @@
+/home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/entity/User.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/controller/HelloController.java
+/home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/repository/UserRepository.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/TinyServerApplication.java
