@@ -13,6 +13,7 @@ import java.util.List;
 public class Group {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO , generator="group_sequence" )
     private int id;
     private String groupName;
     private String groupType;

@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name = "group_admin")
 public class GroupAdmin {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO ,generator="group_admin_seq")
     private int id;
     private String userName;
     private int userId;

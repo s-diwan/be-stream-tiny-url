@@ -1,19 +1,44 @@
 package com.tinyurl.tinyserver.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import lombok.Data;
+
 @Entity
 @Table(name="user")
+@Data
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO )
+	@GeneratedValue(strategy = GenerationType.AUTO ,generator="user_seq")
 	private int id;
+	
+	@NotEmpty
+	@NotBlank(message = "FirstName is mandatory")
+	private String firstName;
+	
+	private String lastName;
+	private String gender;
 	private String userName;
+	
+	@NotEmpty(message = "Email field should not be empty")
+	@Email(regexp = "^(.+)@(.+)$", message = "Invalid email pattern")
+	private String email;
 	private String password;
 	private boolean active;
 	private String roles;
@@ -21,47 +46,6 @@ public class User {
 	@OneToMany(mappedBy = "user" ,cascade = {CascadeType.PERSIST , CascadeType.MERGE , CascadeType.DETACH , CascadeType.REFRESH})
 	@JsonManagedReference
 	private List<Group> groups;
-
-
-	public List<Group> getGroups() {
-		return groups;
-	}
-
-	public void setGroups(List<Group> groups) {
-		this.groups = groups;
-	}
-
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public boolean isActive() {
-		return active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-	public String getRoles() {
-		return roles;
-	}
-	public void setRoles(String roles) {
-		this.roles = roles;
-	}
-
 
 	// bi-directional relationship
 	public void add(Group group){

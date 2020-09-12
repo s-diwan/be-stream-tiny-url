@@ -2,6 +2,7 @@ package com.tinyurl.tinyserver.controller;
 
 import com.tinyurl.tinyserver.auth.AuthenticationRequest;
 import com.tinyurl.tinyserver.auth.AuthenticationResponse;
+import com.tinyurl.tinyserver.dto.UserDto;
 import com.tinyurl.tinyserver.filter.JwtUtil;
 import com.tinyurl.tinyserver.model.User;
 import com.tinyurl.tinyserver.service.UserService;
@@ -49,10 +50,18 @@ public class UserController {
 
 	@PostMapping("/signup")
 	@ResponseStatus(HttpStatus.OK)
-	public void create(@RequestBody User user){
+	public void create(@RequestBody UserDto userDto){
+		User user = new User();
+		user.setFirstName(userDto.getFirstName());
+		user.setLastName(userDto.getLastName());
+		user.setGender(userDto.getGender());
+		user.setEmail(userDto.getEmail());
+		user.setPassword(userDto.getPassword());
+		user.setUserName(userDto.getEmail());
+		user.setActive(true);
+		user.setRoles("USER");
 		userService.create(user);
 	}
-
 
 	@GetMapping("/user/{id}")
 	@PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
