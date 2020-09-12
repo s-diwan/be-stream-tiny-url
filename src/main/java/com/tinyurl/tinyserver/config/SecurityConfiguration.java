@@ -34,8 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			"/authenticate",
 			"/v3/api-docs/**",
 			"/swagger-ui.html",
-			"/swagger-ui/**",
-			"http://tinyurlserver-env.eba-nt8f26gy.us-east-2.elasticbeanstalk.com/"
+			"/swagger-ui/**"
 	};
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
