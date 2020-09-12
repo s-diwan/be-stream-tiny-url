@@ -10,6 +10,7 @@
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/service/CardService.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/model/MyUserDetails.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/auth/AuthenticationRequest.java
+/home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/config/SwaggerConfig.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/auth/AuthenticationResponse.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/config/SecurityConfiguration.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/service/GroupService.java
