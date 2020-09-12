@@ -1,3 +1,4 @@
+com/tinyurl/tinyserver/TinyServerApplication.class
 com/tinyurl/tinyserver/model/Group.class
 com/tinyurl/tinyserver/model/User.class
 com/tinyurl/tinyserver/model/MyUserDetails.class
@@ -21,5 +22,7 @@ com/tinyurl/tinyserver/dao/GroupRepository.class
 com/tinyurl/tinyserver/config/SecurityConfiguration.class
 com/tinyurl/tinyserver/config/SwaggerConfig.class
 com/tinyurl/tinyserver/controller/GroupController.class
+com/tinyurl/tinyserver/auth/AuthenticationRequest.class
 com/tinyurl/tinyserver/service/GroupService.class
+com/tinyurl/tinyserver/auth/AuthenticationResponse.class
 com/tinyurl/tinyserver/service/CardServiceImpl.class
