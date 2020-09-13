@@ -1,68 +1,32 @@
-package com.tinyurl.tinyserver.model;
+ package com.tinyurl.tinyserver.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-import javax.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "card")
+@Data
 public class Card {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO , generator="card_sequence" )
     private int id;
     private String url;
     private String title;
     private String description;
     private String cardType;
     private int group_id;
-
-    public int getGroup_id() {
-        return group_id;
-    }
-
-    public void setGroup_id(int group_id) {
-        this.group_id = group_id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getCardType() {
-        return cardType;
-    }
-
-    public void setCardType(String cardType) {
-        this.cardType = cardType;
-    }
-
-
+    
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "urlmap_id")
+    private UrlMapper urlMapper;
 }

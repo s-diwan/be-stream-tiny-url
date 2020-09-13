@@ -34,7 +34,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			"/authenticate",
 			"/v3/api-docs/**",
 			"/swagger-ui.html",
-			"/swagger-ui/**"
+			"/swagger-ui/**",
+			"/createTinyUrl",
+			"/tiny/**"
 	};
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
