@@ -81,6 +81,18 @@ public class GroupController {
         return  null;
     }
     
+    @GetMapping("/groups/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
+    public Group getGroup(Principal principal,@PathVariable("id") int groupId){
+        Optional<User> user  = userRepository.findByUserName(principal.getName());
+
+        if (user.isPresent()) {
+           return  groupService.getGroup(user, groupId);
+        }
+        return  null;
+    }
+    
     
     @PostMapping("/addGroupAdmin/{groupId}/{userId}")
     @ResponseStatus(HttpStatus.OK)

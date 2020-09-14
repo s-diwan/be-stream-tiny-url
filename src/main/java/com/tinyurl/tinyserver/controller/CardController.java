@@ -45,7 +45,7 @@ public class CardController {
             int userId = user.get().getId();
             int groupId = card.getGroup_id();
             if(groupAdminRepository.findByGroupIdAndUserId(id,userId).size()>0 || groupAdminRepository.findByGroupId(id).size()==0) {
-                cardService.createCard(card,id,user.get());
+                cardService.createCardInGroup(card,id,user.get());
             }
         }
     }
@@ -58,11 +58,7 @@ public class CardController {
         Optional<User> user  = userRepository.findByUserName(principal.getName());
         if (user.isPresent()) {
             int userId = user.get().getId();
-            int groupId = card.getGroup_id();
-            System.out.println("PGID"+groupId);
-            System.out.println("GIDUID "+groupAdminRepository.findByGroupIdAndUserId(groupId,userId).size());
-            System.out.println("GID "+groupAdminRepository.findByGroupId(groupId).size());
-            
+            cardService.createCardInUser(card, user.get());
         }
     }
     
@@ -76,5 +72,15 @@ public class CardController {
         }
         return null;
     }
-
+    
+    @GetMapping("/getMyCards")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
+    public List<Card> getMyCards(Principal principal){
+        Optional<User> user  = userRepository.findByUserName(principal.getName());
+        if (user.isPresent()) {
+            return cardService.getMyCards(user.get());
+        }
+        return null;
+    }
 }

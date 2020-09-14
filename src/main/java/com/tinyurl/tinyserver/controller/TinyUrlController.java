@@ -34,6 +34,22 @@ public class TinyUrlController {
 		//return tinyUrlService.getLongUrl(shortUrl, id);
 	}
 	
+	@GetMapping("/grouptiny/{groupName}/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public void getLongUrlGroup(HttpServletResponse httpServletResponse,@PathVariable("id") String id,@PathVariable("groupName") String groupName) throws IOException{
+		String shortUrl = "http://tinyurlserver-env.eba-nt8f26gy.us-east-2.elasticbeanstalk.com/grouptiny/"+groupName+"/"+id;
+		httpServletResponse.sendRedirect(tinyUrlService.getLongUrl(shortUrl, id));
+		//return tinyUrlService.getLongUrl(shortUrl, id);
+	}
+	
+	@GetMapping("/usertiny/{userName}/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public void getLongUrlCard(HttpServletResponse httpServletResponse,@PathVariable("id") String id,@PathVariable("userName") String userName) throws IOException{
+		String shortUrl = "http://tinyurlserver-env.eba-nt8f26gy.us-east-2.elasticbeanstalk.com/usertiny/"+userName+"/"+id;
+		httpServletResponse.sendRedirect(tinyUrlService.getLongUrl(shortUrl, id));
+		//return tinyUrlService.getLongUrl(shortUrl, id);
+	}
+	
 	@PostMapping("/createTinyUrl")
 	@ResponseStatus(HttpStatus.OK)
 	public String createTinyUrl(@RequestBody String longUrl){

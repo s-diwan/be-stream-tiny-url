@@ -25,7 +25,7 @@ public class Card {
     private String description;
     private String cardType;
     private int group_id;
-    
+    private int userId;
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "urlmap_id")
     private UrlMapper urlMapper;

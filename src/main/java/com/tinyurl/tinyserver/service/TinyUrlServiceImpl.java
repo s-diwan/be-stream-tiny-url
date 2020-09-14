@@ -36,4 +36,22 @@ public class TinyUrlServiceImpl implements TinyUrlService {
 		return urlMapper.getLongUrl();
 	}
 
+	@Override
+	public String createTinyUrlForGroup(String longUrl,String groupName) {
+		// TODO Auto-generated method stub
+		String id = Hashing.murmur3_32().hashString(longUrl+System.currentTimeMillis(), StandardCharsets.UTF_8).toString();
+		String shortUrl = "http://tinyurlserver-env.eba-nt8f26gy.us-east-2.elasticbeanstalk.com"+"/grouptiny/"+groupName+"/"+id;
+        System.out.println("URL Id generated: "+ id);
+		return shortUrl;
+	}
+
+	@Override
+	public String createTinyUrlForCard(String longUrl, String userName) {
+		// TODO Auto-generated method stub
+		String id = Hashing.murmur3_32().hashString(longUrl+System.currentTimeMillis(), StandardCharsets.UTF_8).toString();
+		String shortUrl = "http://tinyurlserver-env.eba-nt8f26gy.us-east-2.elasticbeanstalk.com"+"/usertiny/"+userName+"/"+id;
+        System.out.println("URL Id generated: "+ id);
+		return shortUrl;
+	}
+
 }

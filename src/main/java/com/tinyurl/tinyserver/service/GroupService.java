@@ -14,4 +14,5 @@ public interface GroupService {
     public List<Group> getAllGroups(Optional<User> user);
     public void addGroupAdmin(User user,int groupId,int userId);
     public void deleteGroupAdmin(User user,int groupId,int userId);
+    public Group getGroup(Optional<User> user, int groupId);
 }

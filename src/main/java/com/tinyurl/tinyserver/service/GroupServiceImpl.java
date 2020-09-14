@@ -105,5 +105,11 @@ public class GroupServiceImpl implements  GroupService{
 		}
 	}
 
+	@Override
+	public Group getGroup(Optional<User> user, int groupId) {
+		// TODO Auto-generated method stub
+		return groupRepository.findById(groupId).get();
+	}
+
 
 }

@@ -2,7 +2,9 @@ package com.tinyurl.tinyserver.service;
 
 
 import com.tinyurl.tinyserver.dao.CardRepository;
+import com.tinyurl.tinyserver.dao.GroupRepository;
 import com.tinyurl.tinyserver.model.Card;
+import com.tinyurl.tinyserver.model.Group;
 import com.tinyurl.tinyserver.model.UrlMapper;
 import com.tinyurl.tinyserver.model.User;
 
@@ -20,15 +22,20 @@ public class CardServiceImpl implements  CardService{
     @Autowired
     TinyUrlService tinyUrlService;
     
+    @Autowired
+    GroupRepository groupRepository;
+    
     @Override
-    public void createCard(Card card, int id,User user) {
+    public void createCardInGroup(Card card, int id,User user) {
+    	String groupName = groupRepository.findById(id).get().getGroupName();
     	UrlMapper urlMapper = new UrlMapper();
     	urlMapper.setLongUrl(card.getUrl());
-    	urlMapper.setShortUrl(tinyUrlService.createTinyUrl(card.getUrl()));
+    	urlMapper.setShortUrl(tinyUrlService.createTinyUrlForGroup(card.getUrl(),groupName));
     	urlMapper.setGroup_id(id);
     	urlMapper.setUser_id(user.getId());
     	card.setUrlMapper(urlMapper);
     	card.setGroup_id(id);
+    	card.setUserId(user.getId());
         cardRepository.save(card);
     }
 
@@ -36,5 +43,23 @@ public class CardServiceImpl implements  CardService{
 	public List<Card> getAllCards() {
 		// TODO Auto-generated method stub
 		return cardRepository.findAll();
+	}
+
+	@Override
+	public void createCardInUser(Card card, User user) {
+		// TODO Auto-generated method stub
+		UrlMapper urlMapper = new UrlMapper();
+    	urlMapper.setLongUrl(card.getUrl());
+    	urlMapper.setShortUrl(tinyUrlService.createTinyUrlForCard(card.getUrl(),user.getUserName()));
+    	urlMapper.setUser_id(user.getId());
+    	card.setUserId(user.getId());
+    	card.setUrlMapper(urlMapper);
+        cardRepository.save(card);
+	}
+
+	@Override
+	public List<Card> getMyCards(User user) {
+		// TODO Auto-generated method stub
+		return cardRepository.findByUserId(user.getId());
 	}
 }
