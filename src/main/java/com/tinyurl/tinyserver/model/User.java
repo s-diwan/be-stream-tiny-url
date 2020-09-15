@@ -4,16 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -27,18 +24,12 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO ,generator="user_seq")
 	private int id;
-	
-	@NotEmpty
-	@NotBlank(message = "FirstName is mandatory")
 	private String firstName;
-	
 	private String lastName;
 	private String gender;
-	private String userName;
-	
-	@NotEmpty(message = "Email field should not be empty")
-	@Email(regexp = "^(.+)@(.+)$", message = "Invalid email pattern")
+	private String userName; 
 	private String email;
+	
 	private String password;
 	private boolean active;
 	private String roles;

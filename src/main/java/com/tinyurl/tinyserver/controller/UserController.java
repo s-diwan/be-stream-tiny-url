@@ -1,11 +1,8 @@
 package com.tinyurl.tinyserver.controller;
 
-import com.tinyurl.tinyserver.auth.AuthenticationRequest;
-import com.tinyurl.tinyserver.auth.AuthenticationResponse;
-import com.tinyurl.tinyserver.dto.UserDto;
-import com.tinyurl.tinyserver.filter.JwtUtil;
-import com.tinyurl.tinyserver.model.User;
-import com.tinyurl.tinyserver.service.UserService;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +19,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Optional;
+import com.tinyurl.tinyserver.auth.AuthenticationRequest;
+import com.tinyurl.tinyserver.auth.AuthenticationResponse;
+import com.tinyurl.tinyserver.dao.UserRepository;
+import com.tinyurl.tinyserver.dto.UserDto;
+import com.tinyurl.tinyserver.filter.JwtUtil;
+import com.tinyurl.tinyserver.model.User;
+import com.tinyurl.tinyserver.service.UserService;
 
 
 @RestController
@@ -40,6 +42,9 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	UserRepository userRepository;
 
 
 	@GetMapping("/findall")
@@ -50,7 +55,10 @@ public class UserController {
 
 	@PostMapping("/signup")
 	@ResponseStatus(HttpStatus.OK)
-	public void create(@RequestBody UserDto userDto){
+	public void create(@RequestBody UserDto userDto) throws Exception{
+		if(userRepository.findByUserName(userDto.getEmail()).isPresent()){
+			throw new Exception("Email already exists");
+		}
 		User user = new User();
 		user.setFirstName(userDto.getFirstName());
 		user.setLastName(userDto.getLastName());

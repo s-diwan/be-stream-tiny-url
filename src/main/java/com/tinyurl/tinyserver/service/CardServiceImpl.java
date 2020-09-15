@@ -9,6 +9,7 @@ import com.tinyurl.tinyserver.model.UrlMapper;
 import com.tinyurl.tinyserver.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,5 +62,18 @@ public class CardServiceImpl implements  CardService{
 	public List<Card> getMyCards(User user) {
 		// TODO Auto-generated method stub
 		return cardRepository.findByUserId(user.getId());
+	}
+
+	@Override
+	public void upadteCardInUser(Card card, User user) {
+		// TODO Auto-generated method stub
+		Optional<Card> tempCard = cardRepository.findById(card.getId());
+		if(tempCard.isPresent()){
+			tempCard.get().setUrl(card.getUrl());
+			tempCard.get().setTitle(card.getTitle());
+			tempCard.get().setDescription(card.getDescription());
+			tempCard.get().setCardType(card.getCardType());
+			cardRepository.save(tempCard.get());
+		}
 	}
 }

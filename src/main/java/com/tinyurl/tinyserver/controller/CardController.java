@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tinyurl.tinyserver.dao.GroupAdminRepository;
 import com.tinyurl.tinyserver.dao.UserRepository;
 import com.tinyurl.tinyserver.model.Card;
+import com.tinyurl.tinyserver.model.GroupAdmin;
 import com.tinyurl.tinyserver.model.User;
+import com.tinyurl.tinyserver.service.AuthorityService;
 import com.tinyurl.tinyserver.service.CardService;
 
 
@@ -35,6 +37,9 @@ public class CardController {
 
     @Autowired
     UserRepository userRepository;
+    
+    @Autowired
+    AuthorityService authorityService;
 
     @PostMapping("/createCard/group/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -60,6 +65,36 @@ public class CardController {
             int userId = user.get().getId();
             cardService.createCardInUser(card, user.get());
         }
+    }
+    
+    
+    @PostMapping("/updateCard")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
+    public String updateCard(@RequestBody Card card, Principal principal){
+    	 Optional<User> user  = userRepository.findByUserName(principal.getName());
+         if (user.isPresent()) {
+         	if(card.getGroup_id()==0 && card.getUserId()==user.get().getId()){
+         		int userId = user.get().getId();
+                 cardService.upadteCardInUser(card, user.get());
+                 return "Updated the card as you are the card creator";
+         	}
+         	else{
+         		 List<GroupAdmin> grpAdminList = groupAdminRepository.findByGroupId(card.getGroup_id());
+         		 for(GroupAdmin grpAdmin : grpAdminList){
+         			 if(grpAdmin.getUserId()==user.get().getId()){
+         				 cardService.upadteCardInUser(card, user.get());
+         				 return "Updated the card as you are a admin";
+         			 }
+         			 else{
+         				 authorityService.addApproval(card,user.get().getId(),grpAdminList);
+         				 return "You are not the card group admin so change request is in approval phase";
+         			 }
+         		 }	
+         	}
+             
+         }
+         return null;
     }
     
     @GetMapping("/getAllCards")

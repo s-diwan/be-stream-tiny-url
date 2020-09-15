@@ -9,6 +9,8 @@ import com.tinyurl.tinyserver.model.User;
 public interface CardService {
     public void createCardInGroup(Card card, int id,User user);
     public void createCardInUser(Card card, User user);
+    public void upadteCardInUser(Card card, User user);
     public List<Card> getAllCards();
     public List<Card> getMyCards(User user);
 }
+
