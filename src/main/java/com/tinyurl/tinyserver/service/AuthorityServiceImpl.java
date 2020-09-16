@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.tinyurl.tinyserver.dao.ApprovalRepository;
 import com.tinyurl.tinyserver.dto.ApprovalDto;
+import com.tinyurl.tinyserver.dto.UpdateCardDto;
 import com.tinyurl.tinyserver.model.Approval;
 import com.tinyurl.tinyserver.model.ApprovalAdmin;
-import com.tinyurl.tinyserver.model.Card;
 import com.tinyurl.tinyserver.model.GroupAdmin;
 import com.tinyurl.tinyserver.model.User;
 
@@ -21,7 +21,7 @@ public class AuthorityServiceImpl implements AuthorityService{
 	ApprovalRepository approvalRepository;
 	
 	@Override
-	public void addApproval(Card card,int id, List<GroupAdmin> grpAdminList) {
+	public void addApproval(UpdateCardDto card,int id, List<GroupAdmin> grpAdminList) {
 		// TODO Auto-generated method stub
 		Approval tempApproval = new Approval();
 		tempApproval.setUrl(card.getUrl());

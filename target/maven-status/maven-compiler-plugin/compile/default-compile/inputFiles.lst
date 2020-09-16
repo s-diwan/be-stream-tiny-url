@@ -14,6 +14,7 @@
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/exceptions/ExceptionResponse.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/dao/UrlMapperRepository.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/service/TinyUrlServiceImpl.java
+/home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/dto/UpdateCardDto.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/dto/UserDto.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/service/CardService.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/dao/ApprovalRepository.java
@@ -35,6 +36,7 @@
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/dao/CardRepository.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/dto/ApprovalDto.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/TinyServerApplication.java
+/home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/dto/DeleteCardDto.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/filter/JwtUtil.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/model/User.java
 /home/sdiwan101/tiny-url/tiny-server/src/main/java/com/tinyurl/tinyserver/dao/GroupAdminRepository.java

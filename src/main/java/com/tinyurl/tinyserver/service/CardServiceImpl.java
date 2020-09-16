@@ -3,6 +3,8 @@ package com.tinyurl.tinyserver.service;
 
 import com.tinyurl.tinyserver.dao.CardRepository;
 import com.tinyurl.tinyserver.dao.GroupRepository;
+import com.tinyurl.tinyserver.dto.DeleteCardDto;
+import com.tinyurl.tinyserver.dto.UpdateCardDto;
 import com.tinyurl.tinyserver.model.Card;
 import com.tinyurl.tinyserver.model.Group;
 import com.tinyurl.tinyserver.model.UrlMapper;
@@ -65,15 +67,20 @@ public class CardServiceImpl implements  CardService{
 	}
 
 	@Override
-	public void upadteCardInUser(Card card, User user) {
+	public void upadteCardInUser(UpdateCardDto card, User user) {
 		// TODO Auto-generated method stub
 		Optional<Card> tempCard = cardRepository.findById(card.getId());
 		if(tempCard.isPresent()){
-			tempCard.get().setUrl(card.getUrl());
 			tempCard.get().setTitle(card.getTitle());
 			tempCard.get().setDescription(card.getDescription());
 			tempCard.get().setCardType(card.getCardType());
 			cardRepository.save(tempCard.get());
 		}
+	}
+
+	@Override
+	public void deleteCardInUser(DeleteCardDto card, User user) {
+		// TODO Auto-generated method stub
+		cardRepository.deleteById(card.getId());
 	}
 }
