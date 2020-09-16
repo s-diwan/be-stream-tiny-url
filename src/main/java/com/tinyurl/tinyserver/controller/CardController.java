@@ -23,6 +23,7 @@ import com.tinyurl.tinyserver.dao.GroupAdminRepository;
 import com.tinyurl.tinyserver.dao.UserRepository;
 import com.tinyurl.tinyserver.dto.DeleteCardDto;
 import com.tinyurl.tinyserver.dto.UpdateCardDto;
+import com.tinyurl.tinyserver.dto.UpdateCardResponseDto;
 import com.tinyurl.tinyserver.model.Card;
 import com.tinyurl.tinyserver.model.GroupAdmin;
 import com.tinyurl.tinyserver.model.User;
@@ -75,24 +76,28 @@ public class CardController {
     @PutMapping("/updateCard")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
-    public String updateCard(@RequestBody UpdateCardDto card, Principal principal){
+    public UpdateCardResponseDto updateCard(@RequestBody UpdateCardDto card, Principal principal){
     	 Optional<User> user  = userRepository.findByUserName(principal.getName());
+    	 UpdateCardResponseDto output = new UpdateCardResponseDto();
          if (user.isPresent()) {
          	if(card.getGroup_id()==0 && card.getUserId()==user.get().getId()){
          		int userId = user.get().getId();
                  cardService.upadteCardInUser(card, user.get());
-                 return "Updated the card as you are the card creator";
+                 output.setMessage("Updated the card as you are the card creator");
+                 return output;
          	}
          	else{
          		 List<GroupAdmin> grpAdminList = groupAdminRepository.findByGroupId(card.getGroup_id());
          		 for(GroupAdmin grpAdmin : grpAdminList){
          			 if(grpAdmin.getUserId()==user.get().getId()){
          				 cardService.upadteCardInUser(card, user.get());
-         				 return "Updated the card as you are a admin";
+         				output.setMessage("Updated the card as you are a admin");
+         				 return output;
          			 }
          			 else{
          				 authorityService.addApproval(card,user.get().getId(),grpAdminList);
-         				 return "You are not the card group admin so change request is in approval phase";
+         				 output.setMessage("You are not the card group admin so change request is in approval phase");
+         				 return output;
          			 }
          		 }	
          	}
@@ -106,23 +111,27 @@ public class CardController {
     @DeleteMapping("/deleteCard/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
-    public String deleteCard(@RequestBody DeleteCardDto card,@PathVariable("id") int cardId, Principal principal){
+    public UpdateCardResponseDto deleteCard(@RequestBody DeleteCardDto card,@PathVariable("id") int cardId, Principal principal){
     	 Optional<User> user  = userRepository.findByUserName(principal.getName());
+    	 UpdateCardResponseDto output = new UpdateCardResponseDto();
          if (user.isPresent()) {
          	if(card.getGroup_id()==0 && card.getUserId()==user.get().getId()){
          		int userId = user.get().getId();
                  cardService.deleteCardInUser(card, user.get());
-                 return "Deleted the card as you are the card creator";
+                 output.setMessage("Deleted the card as you are the card creator");
+                 return output;
          	}
          	else{
          		 List<GroupAdmin> grpAdminList = groupAdminRepository.findByGroupId(card.getGroup_id());
          		 for(GroupAdmin grpAdmin : grpAdminList){
          			 if(grpAdmin.getUserId()==user.get().getId()){
          				 cardService.deleteCardInUser(card, user.get());
-         				 return "Updated the card as you are a admin";
+         				  output.setMessage("Deleted the card as you are a admin");
+                          return output;
          			 }
          			 else{
-         				 return "You are not authorized to delete the card";
+         				output.setMessage("You are not authorized to delete the card");
+                        return output;
          			 }
          		 }	
          	}
