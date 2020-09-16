@@ -108,7 +108,7 @@ public class CardController {
     
     
     
-    @DeleteMapping("/deleteCard/{id}")
+    @PostMapping("/deleteCard/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public UpdateCardResponseDto deleteCard(@RequestBody DeleteCardDto card,@PathVariable("id") int cardId, Principal principal){
