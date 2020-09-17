@@ -2,15 +2,18 @@ package com.tinyurl.tinyserver.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tinyurl.tinyserver.dao.ApprovalRepository;
+import com.tinyurl.tinyserver.dao.CardRepository;
 import com.tinyurl.tinyserver.dto.ApprovalDto;
 import com.tinyurl.tinyserver.dto.UpdateCardDto;
 import com.tinyurl.tinyserver.model.Approval;
 import com.tinyurl.tinyserver.model.ApprovalAdmin;
+import com.tinyurl.tinyserver.model.Card;
 import com.tinyurl.tinyserver.model.GroupAdmin;
 import com.tinyurl.tinyserver.model.User;
 
@@ -19,6 +22,9 @@ public class AuthorityServiceImpl implements AuthorityService{
 
 	@Autowired
 	ApprovalRepository approvalRepository;
+	
+	@Autowired
+	CardRepository cardRepository;
 	
 	@Override
 	public void addApproval(UpdateCardDto card,int id, List<GroupAdmin> grpAdminList) {
@@ -49,6 +55,13 @@ public class AuthorityServiceImpl implements AuthorityService{
 		// TODO Auto-generated method stub
 		Approval tempApproval =approvalRepository.findById(id).get();
 		tempApproval.setStatus("Approved");
+		Optional<Card> tempCard =cardRepository.findById(tempApproval.getCardId());
+		if(tempCard.isPresent()){
+			tempCard.get().setTitle(tempApproval.getTitle());
+			tempCard.get().setDescription(tempApproval.getDescription());
+			tempCard.get().setCardType(tempApproval.getCardType());
+			cardRepository.save(tempCard.get());
+		}
 		approvalRepository.save(tempApproval);
 	}
 
@@ -56,6 +69,10 @@ public class AuthorityServiceImpl implements AuthorityService{
 	public void reject(int id) {
 		// TODO Auto-generated method stub
 		Approval tempApproval =approvalRepository.findById(id).get();
+		Optional<Card> tempCard =cardRepository.findById(tempApproval.getCardId());
+		if(tempCard.isPresent()){
+			cardRepository.deleteById(tempApproval.getCardId());
+		}
 		tempApproval.setStatus("Rejected");
 		approvalRepository.save(tempApproval);
 		
