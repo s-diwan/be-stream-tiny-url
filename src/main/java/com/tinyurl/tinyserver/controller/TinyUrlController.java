@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tinyurl.tinyserver.dto.TinyUrlInput;
 import com.tinyurl.tinyserver.service.TinyUrlService;
 
 
@@ -27,10 +28,17 @@ public class TinyUrlController {
 	
 	@GetMapping("/tiny/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public void getLongUrl(HttpServletResponse httpServletResponse,@PathVariable("id") String id) throws IOException{
+	public void getLongUrl(HttpServletResponse httpServletResponse,@PathVariable("id") String id) throws Exception{
 	
 		String shortUrl = "http://tinyurlserver-env.eba-nt8f26gy.us-east-2.elasticbeanstalk.com/tiny/"+id;
-		httpServletResponse.sendRedirect(tinyUrlService.getLongUrl(shortUrl, id));
+		String res = tinyUrlService.getAnonymousLongUrl(shortUrl, id);
+		if(res.equals("Url Expired")){
+			throw new Exception("Url is expired");
+		}
+		else{
+			httpServletResponse.sendRedirect(res);
+		}
+		
 		//return tinyUrlService.getLongUrl(shortUrl, id);
 	}
 	
@@ -52,11 +60,11 @@ public class TinyUrlController {
 	
 	@PostMapping("/createTinyUrl")
 	@ResponseStatus(HttpStatus.OK)
-	public String createTinyUrl(@RequestBody String longUrl){
+	public String createTinyUrl(@RequestBody TinyUrlInput tinyInput){
 		 UrlValidator urlValidator = new UrlValidator(  new String[]{"http", "https"});
-		 if(urlValidator.isValid(longUrl)){
-			 return tinyUrlService.createTinyUrl(longUrl); 
+		 if(urlValidator.isValid(tinyInput.getLongUrl())){
+			 return tinyUrlService.createTinyUrl(tinyInput); 
 		 }
-		throw new RuntimeException("URL Invalid"+ longUrl);
+		throw new RuntimeException("URL Invalid"+ tinyInput.getLongUrl());
 	}
 }

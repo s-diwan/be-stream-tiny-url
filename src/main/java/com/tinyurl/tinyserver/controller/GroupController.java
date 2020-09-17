@@ -3,6 +3,7 @@ package com.tinyurl.tinyserver.controller;
 
 import com.tinyurl.tinyserver.dao.UserRepository;
 import com.tinyurl.tinyserver.dto.GroupDto;
+import com.tinyurl.tinyserver.dto.MessageDto;
 import com.tinyurl.tinyserver.model.Group;
 import com.tinyurl.tinyserver.model.User;
 import com.tinyurl.tinyserver.service.GroupService;
@@ -97,24 +98,43 @@ public class GroupController {
     @PostMapping("/addGroupAdmin/{groupId}/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
-    public void addGroupAdmin(Principal principal,@PathVariable("groupId") int groupId,@PathVariable("userId") int userId){
+    public MessageDto addGroupAdmin(Principal principal,@PathVariable("groupId") int groupId,@PathVariable("userId") int userId){
         Optional<User> user  = userRepository.findByUserName(principal.getName());
+        String res = "";
         if (user.isPresent()) {
-            user.ifPresent(userData -> { 
-                groupService.addGroupAdmin(userData, groupId,userId);
-            });
+             res = groupService.addGroupAdmin(user.get(), groupId,userId);
         }
+        MessageDto msg = new MessageDto();
+        if(res.equals("Success")){
+        	msg.setMessage("Admin Added Successfully");
+        	return msg;
+        }
+        else{
+        	msg.setMessage("Error Adding Admin");
+        	return msg;
+        }
+        
     }
     
     @DeleteMapping("/deleteGroupAdmin/{groupId}/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
-    public void deleteGroupAdmin(Principal principal,@PathVariable("groupId") int groupId,@PathVariable("userId") int userId){
+    public MessageDto deleteGroupAdmin(Principal principal,@PathVariable("groupId") int groupId,@PathVariable("userId") int userId){
         Optional<User> user  = userRepository.findByUserName(principal.getName());
+        String res = "";
         if (user.isPresent()) {
-            user.ifPresent(userData -> { 
-                groupService.deleteGroupAdmin(userData, groupId,userId);
-            });
+            res = groupService.deleteGroupAdmin(user.get(), groupId,userId);
         }
+        
+        MessageDto msg = new MessageDto();
+        if(res.equals("Success")){
+        	msg.setMessage("Admin Deleted Successfully");
+        	return msg;
+        }
+        else{
+        	msg.setMessage("Cannot Delete atlest one admin should be there.");
+        	return msg;
+        }
+       
     }
 }

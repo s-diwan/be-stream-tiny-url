@@ -80,6 +80,13 @@ public class CardController {
     	 Optional<User> user  = userRepository.findByUserName(principal.getName());
     	 UpdateCardResponseDto output = new UpdateCardResponseDto();
          if (user.isPresent()) {
+        	 
+        	 if(card.getGroup_id()==0 && card.getUserId()!=user.get().getId()){
+          		
+                
+                  output.setMessage("You are not authorized to update this card");
+                  return output;
+          	}
          	if(card.getGroup_id()==0 && card.getUserId()==user.get().getId()){
          		int userId = user.get().getId();
                  cardService.upadteCardInUser(card, user.get());
@@ -115,6 +122,12 @@ public class CardController {
     	 Optional<User> user  = userRepository.findByUserName(principal.getName());
     	 UpdateCardResponseDto output = new UpdateCardResponseDto();
          if (user.isPresent()) {
+        	 
+        		if(card.getGroup_id()==0 && card.getUserId()!=user.get().getId()){
+             		
+                     output.setMessage("You are not authorized to delete this card");
+                     return output;
+             	}
          	if(card.getGroup_id()==0 && card.getUserId()==user.get().getId()){
          		int userId = user.get().getId();
                  cardService.deleteCardInUser(card, user.get());

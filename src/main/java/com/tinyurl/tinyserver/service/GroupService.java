@@ -12,7 +12,7 @@ public interface GroupService {
     public void updateGroup(Group group, User user,int groupId);
     public void deleteGroup(User user,int groupId);
     public List<Group> getAllGroups(Optional<User> user);
-    public void addGroupAdmin(User user,int groupId,int userId);
-    public void deleteGroupAdmin(User user,int groupId,int userId);
+    public String addGroupAdmin(User user,int groupId,int userId);
+    public String deleteGroupAdmin(User user,int groupId,int userId);
     public Group getGroup(Optional<User> user, int groupId);
 }

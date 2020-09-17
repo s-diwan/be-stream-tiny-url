@@ -73,7 +73,7 @@ public class GroupServiceImpl implements  GroupService{
 	}
 
 	@Override
-	public void addGroupAdmin(User user, int groupId, int userId) {
+	public String addGroupAdmin(User user, int groupId, int userId) {
 		// TODO Auto-generated method stub
 		if(!(groupAdminRepository.findByGroupIdAndUserId(groupId, userId).size()>0)){
 			List<GroupAdmin> groupAdminList= groupAdminRepository.findByGroupId(groupId);
@@ -85,24 +85,27 @@ public class GroupServiceImpl implements  GroupService{
 						newGrpAdmin.setUserId(userId);
 						newGrpAdmin.setUserName(userRepository.findById(userId).get().getUserName());
 						groupAdminRepository.save(newGrpAdmin);
+						return "Success";
 					}
 				}
 			}	
 		}
-		
+		return null;
 	}
 
 	@Override
-	public void deleteGroupAdmin(User user, int groupId, int userId) {
+	public String deleteGroupAdmin(User user, int groupId, int userId) {
 		// TODO Auto-generated method stub
 		List<GroupAdmin> groupAdminList= groupAdminRepository.findByGroupId(groupId);
-		if(groupAdminList.size()>2){
+		if(groupAdminList.size()>=2){
 			for(GroupAdmin grpAdmin:groupAdminList){
 				if(user.getId()==grpAdmin.getUserId()){
 					groupAdminRepository.delete(groupAdminRepository.findByGroupIdAndUserId(groupId, userId).get(0));
+					return "Success";
 				}
 			}
 		}
+		return null;
 	}
 
 	@Override

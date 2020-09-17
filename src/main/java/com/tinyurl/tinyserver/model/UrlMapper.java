@@ -1,12 +1,11 @@
 package com.tinyurl.tinyserver.model;
 
+import java.util.Calendar;
+
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -22,4 +21,5 @@ public class UrlMapper {
     private String shortUrl;
     private int group_id;
     private int user_id;
+    private Calendar ttl;
 }
