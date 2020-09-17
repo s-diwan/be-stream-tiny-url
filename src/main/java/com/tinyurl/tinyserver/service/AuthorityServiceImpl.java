@@ -69,10 +69,6 @@ public class AuthorityServiceImpl implements AuthorityService{
 	public void reject(int id) {
 		// TODO Auto-generated method stub
 		Approval tempApproval =approvalRepository.findById(id).get();
-		Optional<Card> tempCard =cardRepository.findById(tempApproval.getCardId());
-		if(tempCard.isPresent()){
-			cardRepository.deleteById(tempApproval.getCardId());
-		}
 		tempApproval.setStatus("Rejected");
 		approvalRepository.save(tempApproval);
 		

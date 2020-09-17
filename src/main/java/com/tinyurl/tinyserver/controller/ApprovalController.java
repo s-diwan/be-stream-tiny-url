@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tinyurl.tinyserver.dao.ApprovalRepository;
 import com.tinyurl.tinyserver.dao.UserRepository;
 import com.tinyurl.tinyserver.dto.ApprovalDto;
+import com.tinyurl.tinyserver.dto.MessageDto;
 import com.tinyurl.tinyserver.model.Approval;
 import com.tinyurl.tinyserver.model.User;
 import com.tinyurl.tinyserver.service.AuthorityService;
@@ -47,34 +48,41 @@ public class ApprovalController {
     @GetMapping("/approve/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
-    public void approve(@PathVariable("id") int id,Principal principal) throws Exception{
+    public MessageDto approve(@PathVariable("id") int id,Principal principal) throws Exception{
     	 Optional<User> user  = userRepository.findByUserName(principal.getName());
+    	 MessageDto msg = new MessageDto();
     	  if (user.isPresent()) {
     		  Approval tempApproval =approvalRepository.findById(id).get();
     		  if(tempApproval.getStatus().equals("Inapproval")){
     			  authorityService.approve(id);
+    			  msg.setMessage("Approved");
+    			  return msg;
     		  }
     		  else{
     			  throw new Exception("Already Approved or rejected");
     		  }
     		  
     	  }
+    	  return null;
     }
     
     @GetMapping("/reject/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
-    public void reject(@PathVariable("id") int id,Principal principal) throws Exception{
+    public MessageDto reject(@PathVariable("id") int id,Principal principal) throws Exception{
     	 Optional<User> user  = userRepository.findByUserName(principal.getName());
+    	 MessageDto msg = new MessageDto();
     	  if (user.isPresent()) {
     		 Approval tempApproval =approvalRepository.findById(id).get();
     		 if(tempApproval.getStatus().equals("Inapproval")){
     		 authorityService.reject(id);
+    		 msg.setMessage("Reject");
+			  return msg;
     		 }
     		 else{
    			  throw new Exception("Already Approved or rejected");
    		  }
     	  }
-    	  
+    	  return null;
     }
 }

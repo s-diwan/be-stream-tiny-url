@@ -1,6 +1,7 @@
  package com.tinyurl.tinyserver.model;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,8 +25,11 @@ public class Card {
     private String title;
     private String description;
     private String cardType;
+    
+    @Column(name = "group_id")
     private int group_id;
     private int userId;
+    
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "urlmap_id")
     private UrlMapper urlMapper;

@@ -1,5 +1,6 @@
 package com.tinyurl.tinyserver.service;
 
+import com.tinyurl.tinyserver.dao.CardRepository;
 import com.tinyurl.tinyserver.dao.GroupAdminRepository;
 import com.tinyurl.tinyserver.dao.GroupRepository;
 import com.tinyurl.tinyserver.dao.UserRepository;
@@ -26,6 +27,8 @@ public class GroupServiceImpl implements  GroupService{
     @Autowired
     GroupAdminRepository groupAdminRepository;
     
+    @Autowired
+    CardRepository cardRepository;
 
     @Override
     public void create(Group group, User user) {
@@ -42,7 +45,7 @@ public class GroupServiceImpl implements  GroupService{
 
     @Override
     public List<Group> getAllGroups(Optional<User> user) {
-        return groupRepository.findByUserId(user.get().getId());
+        return groupRepository.getMyGroup(user.get().getId());
     }
 
 	@Override
@@ -66,6 +69,7 @@ public class GroupServiceImpl implements  GroupService{
 		if(groupAdminList.size()>0){
 			for(GroupAdmin grpAdmin:groupAdminList){
 				if(user.getId()==grpAdmin.getUserId()){
+					cardRepository.deleteByGroupId(groupId);
 					groupRepository.deleteById(groupId);
 				}
 			}
